@@ -1,30 +1,34 @@
 {
+  "display": {
+    "label": "ollie",
+    "source": "fixed demo UI label"
+  },
   "runtime": {
     "pid": 4233,
     "process": "Python / SkateLens",
-    "sampled_at": 1794870360.5964952,
+    "sampled_at": 1794871242.574829,
     "busy": false,
     "model": {
       "model_device": "mps:0",
       "running": false,
-      "completed": 1,
+      "completed": 2,
       "tensor_bytes": 344908800,
       "driver_bytes": 1485537280,
       "last_execution": {
         "pid": 4233,
-        "finished_at": 1794870278.222978,
+        "finished_at": 1794871180.998823,
         "model_device": "mps:0",
         "input_device": "mps:0",
         "embedding_device": "mps:0",
-        "metal_ms": 625.763834
+        "metal_ms": 403.030875
       }
     },
     "gpu": {
       "name": "Apple M3 Pro",
-      "utilization_percent": 24,
+      "utilization_percent": 27,
       "scope": "whole Mac, all applications",
       "source": "macOS IOAccelerator / Device Utilization %",
-      "sampled_at": 1794870360.3689961
+      "sampled_at": 1794871242.597631
     },
     "model_offline": true
   },
@@ -37,20 +41,20 @@
     "confidence": 0.907311126946228,
     "margin": 0.814622253892456,
     "device": "mps",
-    "preprocess_ms": 139.16704105213284,
-    "encoder_ms": 638.5122090578079,
-    "inference_ms": 777.9260410461575,
+    "preprocess_ms": 129.6157909091562,
+    "encoder_ms": 436.7165840230882,
+    "inference_ms": 566.5820830035955,
     "model_revision": "dc740ceda42fce44faed2ea03c6d447db72f6af9",
     "probe_sha256": "e1cd03ee8a78d59c28c3d2ee66d81327a271844affa968a275a0b16d0f605d42",
     "frames": 16,
     "calibrated": false,
     "execution": {
       "pid": 4233,
-      "finished_at": 1794870278.222978,
+      "finished_at": 1794871180.998823,
       "model_device": "mps:0",
       "input_device": "mps:0",
       "embedding_device": "mps:0",
-      "metal_ms": 625.763834
+      "metal_ms": 403.030875
     },
     "audit": {
       "frame_shape": [
@@ -120,9 +124,9 @@
     "decoder": "OpenCV 4.14.0",
     "decoder_backend": "FFMPEG",
     "sampling": "uniform inclusive first-last; ties-to-even rounding",
-    "decode_ms": 565.1956249494106,
-    "server_ms": 1398.3104589860886,
+    "decode_ms": 303.6897499114275,
+    "server_ms": 923.9323330111802,
     "mode": "replay",
-    "recorded_at": 1794870278.27832
+    "recorded_at": 1794871181.052683
   }
 }

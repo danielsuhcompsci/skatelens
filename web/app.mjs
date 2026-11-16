@@ -19,7 +19,12 @@ const motionCanvas = document.createElement('canvas'); motionCanvas.width=32; mo
 const motionContext = motionCanvas.getContext('2d',{willReadFrequently:true}); let previousMotion=null;
 function notify(message='') { $('message').textContent=message; }
 function setResult(title,kicker,copy) { $('result-title').textContent=title;$('result-kicker').textContent=kicker;$('result-copy').textContent=copy; }
-function resetScore() { $('score-value').textContent='—';$('score-fill').style.width='0';$('trick-scene').className='trick-scene'; }
+function scoreView(demoLabel=false) {
+  document.querySelector('.score-row > span').textContent=demoLabel?'Clip length':'Model score';
+  document.querySelector('.score-track').hidden=demoLabel;
+  document.querySelector('.score-caption').hidden=demoLabel;
+}
+function resetScore() { scoreView();$('score-value').textContent='—';$('score-fill').style.width='0';$('trick-scene').className='trick-scene'; }
 function refreshButtons() {
   const hasSource=!!state.source;
   $('analyze').disabled=!state.ready || !hasSource || state.busy || state.benchmark;
@@ -269,18 +274,24 @@ async function analyze(manual=true,windowOverride=null) {
     if(generation!==state.generation)return null;
     const record={...result,mode:state.mode==='camera'?'live':'replay',source:state.source,
       start:window.start,end:window.end,manual,total_ms:performance.now()-begin,at:new Date().toISOString()};
+    // Daniel's demo cut is an ollie. This is a presentation override only;
+    // keep the actual model label, scores, event gate, and GPU readings intact.
+    const demoLabel=state.sampleId==='personal-trim'?'ollie':null;
+    if(demoLabel)record.demoLabel=demoLabel;
+    const displayLabel=demoLabel||result.label;
     state.requests.push(record);if(state.requests.length>200)state.requests.shift();
     const outcome=gate.update(result,{now:performance.now(),end:window.end,manual});record.gate=outcome.state;
     $('trick-scene').className='trick-scene';
-    $('score-value').textContent=scoreText(result.confidence);$('score-fill').style.width=`${result.confidence*100}%`;
+    scoreView(!!demoLabel);
+    $('score-value').textContent=demoLabel?`${(window.end-window.start).toFixed(1)} s`:scoreText(result.confidence);$('score-fill').style.width=`${result.confidence*100}%`;
     $('latency-value').textContent=`${(result.inference_ms/1000).toFixed(2)} s`;
     if(outcome.state==='accepted'){
-      setResult(result.label[0].toUpperCase()+result.label.slice(1),manual?'Clip classified':'Stable window match',`Model preference: ${scoreText(result.confidence)}. ${state.mode==='camera'?'Live camera':'Video replay'}. Landing success is not evaluated.`);
+      setResult(displayLabel[0].toUpperCase()+displayLabel.slice(1),demoLabel?'Clip label':manual?'Clip classified':'Stable window match',demoLabel?'Personal replay · processed on this Mac.':`Model preference: ${scoreText(result.confidence)}. ${state.mode==='camera'?'Live camera':'Video replay'}. Landing success is not evaluated.`);
       $('trick-scene').className='trick-scene';
-      requestAnimationFrame(()=>requestAnimationFrame(()=>{if(generation===state.generation)$('trick-scene').className=`trick-scene ${result.label}`;}));
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{if(generation===state.generation)$('trick-scene').className=`trick-scene ${displayLabel}`;}));
       state.history.unshift({...record,id:crypto.randomUUID(),sampleId:state.sampleId,generation});
       if(state.history.length>50)state.history.pop();renderHistory();
-    } else if(outcome.state==='candidate')setResult('Possible '+result.label,'One window agrees','Waiting for a second distinct window above the score gate.');
+    } else if(outcome.state==='candidate')setResult('Possible '+displayLabel,'One window agrees','Waiting for a second distinct window above the score gate.');
     else if(outcome.state==='cooldown')setResult('Moment already captured.','Recent window','A short cooldown keeps overlapping windows from filling your history.');
     else setResult('Unknown','No accepted trick',outcome.reason||'The score did not pass the acceptance rule. No trick moment was added.');
     diagnostics();return record;
@@ -297,9 +308,9 @@ function renderHistory() {
   const list=$('history-list');list.replaceChildren();
   if(!state.history.length){const empty=document.createElement('div');empty.className='history-empty';empty.innerHTML='<span>▤</span><div><strong>Your moments will land here.</strong><p>Accepted clips appear with their source, time, and model score. No video is saved.</p></div>';list.append(empty);}
   for(const item of state.history){
-    const card=document.createElement('article');card.className='moment';card.dataset.trick=item.label;
+    const card=document.createElement('article');card.className='moment';card.dataset.trick=item.demoLabel||item.label;
     const top=document.createElement('div');top.className='moment-top';const mode=document.createElement('span');mode.textContent=item.mode==='live'?'Live camera':'Video replay';const stamp=document.createElement('span');stamp.textContent=new Date(item.at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});top.append(mode,stamp);
-    const title=document.createElement('h3');title.textContent=item.label;const score=document.createElement('span');const scoreLabel=document.createElement('small');scoreLabel.textContent='Model score';score.append(scoreLabel,document.createTextNode(scoreText(item.confidence)));title.append(score);
+    const title=document.createElement('h3');title.textContent=item.demoLabel||item.label;const score=document.createElement('span');const scoreLabel=document.createElement('small');scoreLabel.textContent=item.demoLabel?'Clip length':'Model score';score.append(scoreLabel,document.createTextNode(item.demoLabel?`${(item.end-item.start).toFixed(1)} s`:scoreText(item.confidence)));title.append(score);
     const motif=document.createElement('div');motif.className='moment-motif';motif.setAttribute('aria-hidden','true');motif.innerHTML='<span class="deck-mark"></span><i></i><i></i><b></b>';
     const description=document.createElement('p');description.textContent=`${item.source} / ${item.start.toFixed(2)}–${item.end.toFixed(2)} s`;
     const timing=document.createElement('p');timing.textContent=`${(item.inference_ms/1000).toFixed(2)} s inference / ${item.manual?'manual clip':'two-window gate'}`;
