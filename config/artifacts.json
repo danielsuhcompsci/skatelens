@@ -1,0 +1,22 @@
+{
+  "models/encoder/model.safetensors": {
+    "bytes": 376873760,
+    "sha256": "bc053ca2840a038b1068269a4eec06ca569689e9a1ed9376a5b2b8a111be5290"
+  },
+  "models/encoder/config.json": {
+    "bytes": 725,
+    "sha256": "5fbedfea3706bd9fe6c0dc706beeb501ae72e4954703e03bebe3406f046f8212"
+  },
+  "models/probe.json": {
+    "bytes": 49899,
+    "sha256": "7fc15ab88a4601f87e2258c644f4ed7541771af64b69f024e411c39fea1dfb49"
+  },
+  "models/probe-all-training-clips.joblib": {
+    "bytes": 25937,
+    "sha256": "e1cd03ee8a78d59c28c3d2ee66d81327a271844affa968a275a0b16d0f605d42"
+  },
+  "models/pose_landmarker_lite.task": {
+    "bytes": 5777746,
+    "sha256": "59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a"
+  }
+}

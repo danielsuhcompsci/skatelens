@@ -1,0 +1,47 @@
+/* Animata Fluid Tabs adaptation; Copyright (c) Animata, MIT.
+   See upstream/animata/LICENSE.md and ATTRIBUTION.md. */
+.animata-fluid-tabs {
+  position: relative;
+  isolation: isolate;
+}
+.animata-fluid-tabs > .fluid-tab-indicator {
+  position: absolute;
+  z-index: 0;
+  inset: 0 auto auto 0;
+  display: block;
+  pointer-events: none;
+  border-radius: var(--fluid-tab-radius, 6px);
+  background: var(--fluid-tab-surface, #fff);
+  box-shadow: var(--fluid-tab-shadow, 0 1px 3px #0b19331c);
+}
+.animata-fluid-tabs > [role="tab"] {
+  position: relative;
+  z-index: 1;
+}
+.animata-fluid-tabs[data-fluid-ready] > [role="tab"][aria-selected="true"] {
+  background: transparent;
+  box-shadow: none;
+}
+.animata-fluid-tabs > [role="tab"]:focus-visible {
+  outline: 2px solid var(--fluid-tab-focus, #245be8);
+  outline-offset: 3px;
+  z-index: 2;
+}
+.animata-fluid-tabs .fluid-tab-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transform: scale(0.98);
+  transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.animata-fluid-tabs [aria-selected="true"] .fluid-tab-label {
+  transform: scale(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .animata-fluid-tabs .fluid-tab-label {
+    transform: none;
+    transition: none;
+  }
+}

@@ -1,1 +1,10 @@
-.vscode
+.venv
+models
+web/vendor
+.runtime
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+.env.*
+!.env.example

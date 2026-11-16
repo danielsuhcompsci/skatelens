@@ -1,0 +1,40 @@
+{
+  "model": "MCG-NJU/videomae-base",
+  "revision": "dc740ceda42fce44faed2ea03c6d447db72f6af9",
+  "frames": 16,
+  "sampling": "uniform inclusive first-last; round indices",
+  "pooling": "mean of last_hidden_state tokens",
+  "processor": {
+    "_processor_class": null,
+    "do_resize": true,
+    "size": {
+      "shortest_edge": 224
+    },
+    "do_center_crop": true,
+    "crop_size": {
+      "height": 224,
+      "width": 224
+    },
+    "resample": 2,
+    "do_rescale": true,
+    "rescale_factor": 0.00392156862745098,
+    "do_normalize": true,
+    "image_mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "image_std": [
+      0.229,
+      0.224,
+      0.225
+    ],
+    "image_processor_type": "VideoMAEImageProcessor"
+  },
+  "transformers": "4.57.1",
+  "class_order": [
+    "kickflip",
+    "ollie"
+  ],
+  "probe_sha256": "e1cd03ee8a78d59c28c3d2ee66d81327a271844affa968a275a0b16d0f605d42"
+}
