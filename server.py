@@ -5,6 +5,7 @@ import io
 import hashlib
 import json
 import logging
+import os
 import secrets
 import threading
 import time
@@ -21,6 +22,7 @@ from PIL import Image, UnidentifiedImageError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from inference import Predictor, sample_indices
+from runtime_monitor import MacGpuMonitor
 
 ROOT = Path(__file__).resolve().parent
 MAX_BODY = 96 * 1024 * 1024
@@ -30,6 +32,7 @@ predictor = None
 busy = asyncio.Lock()
 replay_bytes = {}
 metrics = []
+gpu_monitor = MacGpuMonitor()
 
 
 def record_metric(result, mode):
@@ -86,6 +89,18 @@ def status():
     return {**state, 'model': 'M1 frozen VideoMAE + linear probe',
             'classes': ['kickflip', 'ollie'], 'frames': 16, 'storage': 'memory only',
             'calibrated': False, 'busy': busy.locked()}
+
+
+@app.get('/api/runtime')
+def runtime():
+    return {
+        'pid': os.getpid(), 'process': 'Python / SkateLens',
+        'sampled_at': time.time(), 'busy': busy.locked(),
+        'model': predictor.runtime() if predictor else None,
+        'gpu': gpu_monitor.read(),
+        'model_offline': os.environ.get('HF_HUB_OFFLINE') == '1'
+                         and os.environ.get('TRANSFORMERS_OFFLINE') == '1',
+    }
 
 
 @app.post('/api/analyze')

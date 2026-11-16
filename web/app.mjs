@@ -1,6 +1,8 @@
 import { EventGate, sampleIndices } from './gate.mjs';
 import { enhanceFluidTabs } from './design-resources/fluid-tabs.mjs';
+import { mountRuntimeMonitor } from './runtime-monitor.mjs';
 const $ = id => document.getElementById(id);
+mountRuntimeMonitor();
 const video = $('video'), overlay = $('overlay'), context = overlay.getContext('2d');
 const gate = new EventGate();
 const state = { mode:'camera', source:null, stream:null, objectURL:null, file:null,

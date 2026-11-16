@@ -1,0 +1,128 @@
+{
+  "runtime": {
+    "pid": 4233,
+    "process": "Python / SkateLens",
+    "sampled_at": 1794870360.5964952,
+    "busy": false,
+    "model": {
+      "model_device": "mps:0",
+      "running": false,
+      "completed": 1,
+      "tensor_bytes": 344908800,
+      "driver_bytes": 1485537280,
+      "last_execution": {
+        "pid": 4233,
+        "finished_at": 1794870278.222978,
+        "model_device": "mps:0",
+        "input_device": "mps:0",
+        "embedding_device": "mps:0",
+        "metal_ms": 625.763834
+      }
+    },
+    "gpu": {
+      "name": "Apple M3 Pro",
+      "utilization_percent": 24,
+      "scope": "whole Mac, all applications",
+      "source": "macOS IOAccelerator / Device Utilization %",
+      "sampled_at": 1794870360.3689961
+    },
+    "model_offline": true
+  },
+  "classification": {
+    "label": "kickflip",
+    "scores": {
+      "kickflip": 0.907311126946228,
+      "ollie": 0.09268887305377199
+    },
+    "confidence": 0.907311126946228,
+    "margin": 0.814622253892456,
+    "device": "mps",
+    "preprocess_ms": 139.16704105213284,
+    "encoder_ms": 638.5122090578079,
+    "inference_ms": 777.9260410461575,
+    "model_revision": "dc740ceda42fce44faed2ea03c6d447db72f6af9",
+    "probe_sha256": "e1cd03ee8a78d59c28c3d2ee66d81327a271844affa968a275a0b16d0f605d42",
+    "frames": 16,
+    "calibrated": false,
+    "execution": {
+      "pid": 4233,
+      "finished_at": 1794870278.222978,
+      "model_device": "mps:0",
+      "input_device": "mps:0",
+      "embedding_device": "mps:0",
+      "metal_ms": 625.763834
+    },
+    "audit": {
+      "frame_shape": [
+        1920,
+        1080,
+        3
+      ],
+      "frame_hashes": [
+        "b924b85f84ddba276bb79f7f1de249ce2562fa34a2bc34da30b8f9091f9b3e11",
+        "473b2ae4f5a2fb821c9f1b06a6e88c2d23798b013db588e33dcb78a02097d773",
+        "fa7ecde5671b3247b58a1d0e615b68d832472517e202550023f38f2938e51b17",
+        "be33662b56145209b0ed01fb2c709df1840961ce2ba5e332029ae25a080f196b",
+        "0b04b0f44412536b1a3e1d7fe53075ebb4919da8b8afa3b7bb9069ea9b84faf7",
+        "71e27a55e85f179b2da24a0fa61e987e56ce39c6e089d62aedcda86fe1b5636c",
+        "233a904f9d301e8a95afebd1c4dcea0b0685b09926469bc0296760b909f6faca",
+        "ee485fb3ee22fe8b37edb6c73ef658a98a46e78c16e886437015e9ee9ee569ae",
+        "d4970cb955296f3a417d43b268b27aa14dd74fe1b20cf05e73b25a10ea417d18",
+        "efb7b6b1e1d023f05973c66fa20d6c7eb9057106b80770734bc1400d69844801",
+        "85e41a8d9418a655686308640b6072285b9b2c365cc2ac2b195b96dd140a0058",
+        "18f20ef898094e7bdf20452c97c658f00884bce29784d51ab0f3b7b4c9ebf0c9",
+        "7ec8d0242ad25569edd6a60975713c458adf58f5ad3bd73ddb420394b021854d",
+        "cadb354449bd1a3cee90a4ee6168697224c92a139f6c98d1570d804df65a4c1b",
+        "46b377879fc29518f34a0f931bb795bd8132c62a12dd2ebfd704c0900ad06cf2",
+        "051c80c30c53cb290bceedff3487515e74575902b847dee92a119e2cf9485b5e"
+      ],
+      "input_sha256": "e9f0db4aa8c4e668a7867b4ebc49d4b8043725a5817b30a3bacd7160675e3458",
+      "attention": "sdpa",
+      "clip_sha256": "5c66fbaa3ab8be6d2ed2625d769fa557cbdea14a9c531d26d202ebcc381ca065"
+    },
+    "decoded_frames": 60,
+    "sampled_indices": [
+      0,
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28,
+      31,
+      35,
+      39,
+      43,
+      47,
+      51,
+      55,
+      59
+    ],
+    "sampled_timestamps": [
+      0.0,
+      0.13333333333333333,
+      0.26666666666666666,
+      0.4,
+      0.5333333333333333,
+      0.6666666666666666,
+      0.8,
+      0.9333333333333333,
+      1.0333333333333332,
+      1.1666666666666667,
+      1.3,
+      1.4333333333333333,
+      1.5666666666666667,
+      1.7,
+      1.8333333333333333,
+      1.9666666666666666
+    ],
+    "decoder": "OpenCV 4.14.0",
+    "decoder_backend": "FFMPEG",
+    "sampling": "uniform inclusive first-last; ties-to-even rounding",
+    "decode_ms": 565.1956249494106,
+    "server_ms": 1398.3104589860886,
+    "mode": "replay",
+    "recorded_at": 1794870278.27832
+  }
+}

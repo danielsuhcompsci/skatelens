@@ -12,3 +12,13 @@ checks=[
 for name,result,expected in checks:
     assert result.status_code==expected,(name,result.status_code)
     print(f'PASS {name}')
+
+runtime=requests.get(base+'/api/runtime').json()
+assert isinstance(runtime['pid'],int) and runtime['pid']>0
+assert runtime['model_offline'] is True
+if runtime['model']:
+    device=runtime['model']['model_device']
+    assert device in ('cpu','mps:0'),device
+    if device=='mps:0': assert runtime['model']['tensor_bytes']>0
+    else: assert runtime['model']['tensor_bytes'] is None
+print('PASS actual process and model device telemetry')

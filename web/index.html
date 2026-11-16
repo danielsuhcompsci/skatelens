@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111614"><title>SkateLens — Your session, in focus</title><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/cards.css"><link rel="stylesheet" href="/design-resources/fluid-tabs.css"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111614"><title>SkateLens — Your session, in focus</title><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/cards.css"><link rel="stylesheet" href="/runtime-monitor.css"><link rel="stylesheet" href="/design-resources/fluid-tabs.css"></head>
 <body>
 <aside class="rail"><a class="brand" href="/" aria-label="SkateLens home"><span class="lens">◉</span><span>SkateLens<span class="brand-dot">.</span></span></a><div class="rail-label">YOUR WORKSPACE</div><a class="nav active" href="#studio"><span>▣</span> Session studio <span class="nav-dot"></span></a><a class="nav" href="#history"><span>◷</span> Session history</a><a class="nav" href="#details"><span>⊙</span> Model &amp; performance</a><div class="rail-bottom"><span class="local-icon">⌁</span><strong>Made for your sessions.</strong><p>Camera frames stay on this Mac. No account. No cloud inference.</p><span class="version">LOCAL LAB · 01</span></div></aside>
 <main id="studio">
 <header><div class="eyebrow">THE SESSION STUDIO</div><div class="header-right"><span class="privacy"><i></i> ON DEVICE</span><span class="avatar">D</span></div></header>
-<section class="intro"><div><h1>Your session, in focus.</h1><p>See your movement. Find your trick. Keep the moment.</p></div><span class="pill" id="model-pill">Loading local model…</span></section>
+<section class="intro"><div><h1>Your session, in focus.</h1><p>See your movement. Find your trick. Keep the moment.</p></div><div class="status-tools"><span class="pill" id="model-pill">Loading local model…</span><button class="proof-toggle" id="runtime-toggle" aria-controls="runtime-proof" aria-expanded="false">Device activity ↗</button></div></section>
 <div class="studio-grid">
 <section class="viewer-panel">
 <div class="panel-top"><div class="tabs" role="tablist" aria-label="Video source"><button id="camera-tab" role="tab" aria-selected="true">◎ &nbsp; Live camera</button><button id="replay-tab" role="tab" aria-selected="false">▷ &nbsp; Video replay</button></div><label class="toggle"><input type="checkbox" id="pose-toggle" checked><span></span>Pose overlay</label></div>
@@ -19,6 +19,14 @@
 </section>
 <aside class="insight-panel"><div class="section-label"><span class="green-dot"></span> SESSION INSIGHT <span id="mode-badge">LIVE</span></div><div class="result-heading" role="status" aria-live="polite" aria-atomic="true"><span id="result-kicker">WAITING FOR YOU</span><h2 id="result-title">Ready when<br>you are.</h2><p id="result-copy">Start a camera or load a clip to bring your session into view.</p></div>
 <div class="trick-scene" id="trick-scene" aria-hidden="true"><div class="scene-grid"></div><div class="mini-board"><span></span><i></i><i></i></div><div class="board-shadow"></div></div>
+<section class="runtime-proof" id="runtime-proof" aria-label="Local device activity" hidden>
+<div class="runtime-heading"><strong id="runtime-chip">Local device</strong><span id="runtime-updated">Connecting</span></div>
+<p class="runtime-process" id="runtime-process">Reading local process…</p><p class="runtime-origin" id="runtime-origin"></p>
+<div class="runtime-chart-label"><span>Mac GPU · all apps</span><strong id="runtime-percent">—</strong></div>
+<svg viewBox="0 0 300 42" role="img" aria-label="Live whole-Mac GPU utilization, last 30 seconds" preserveAspectRatio="none"><polyline id="runtime-line" points=""></polyline></svg>
+<dl><dt>Model device</dt><dd id="runtime-model">—</dd><dt>GPU tensor memory</dt><dd id="runtime-memory">—</dd><dt>Last Metal event</dt><dd id="runtime-metal">—</dd><dt>Input → embedding</dt><dd id="runtime-tensors">—</dd></dl>
+<div class="runtime-state"><span id="runtime-state">Reading activity…</span><span id="runtime-offline"></span></div>
+</section>
 <div class="score-row"><span>Model score</span><strong id="score-value">—</strong></div><div class="score-track"><div id="score-fill"></div><i id="threshold-marker"></i></div><div class="score-caption"><span>Two-class preference</span><span id="gate-caption">85% gate</span></div>
 <button class="primary analyze" id="analyze" disabled>Analyze 2-second clip <span>↗</span></button><label class="auto-row"><input type="checkbox" id="auto-analyze"> Analyze overlapping windows</label><p class="control-note">Optional · one local request at a time.<br>Automatic detections require two agreeing windows.</p>
 <div class="insight-footer"><span>Supported tricks</span><strong>Ollie <b>·</b> Kickflip</strong></div></aside>

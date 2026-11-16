@@ -16,6 +16,18 @@ A local skateboarding session studio. Replay a clip or start a camera, see a liv
 
 The interface uses the original dark-and-green SkateLens design. Its animated source tabs adapt Animata Fluid Tabs, discovered through Designeer; [source and license credits](web/design-resources/ATTRIBUTION.md) are included.
 
+## Local GPU proof
+
+[![Live Apple GPU readings beside Daniel’s kickflip](docs/local-gpu.jpg)](https://github.com/danielsuhcompsci/skatelens/raw/refs/heads/main/docs/local-gpu.mp4)
+
+**[Watch local inference with live GPU readings](https://github.com/danielsuhcompsci/skatelens/raw/refs/heads/main/docs/local-gpu.mp4)** · [Recorded measurements](docs/local-gpu.json)
+
+Open **Device activity** to see the local Python process, loopback address, actual model/input/embedding device, GPU tensor memory, and the last timed Metal event. The recording shows VideoMAE running on an **Apple M3 Pro**, with tensors on **`mps:0`**, **329 MiB** of GPU tensor memory, and a **625.8 ms** Metal event for the kickflip clip.
+
+The graph reads macOS’s `IOAccelerator` device utilization counter and covers **all apps on the Mac**. The tensor placement, memory, and Metal event readings come from the SkateLens Python process. The model encoder runs on the GPU; video decoding, preprocessing, the small linear probe, and browser pose tracking use the CPU. Example footage streams before inference; the encoder loads local weights in offline mode.
+
+The monitor uses [PyTorch’s MPS event timing](https://docs.pytorch.org/docs/stable/generated/torch.mps.event.Event.html) and [GPU tensor memory readings](https://docs.pytorch.org/docs/stable/generated/torch.mps.current_allocated_memory.html). It requires no administrator access. Missing counters display as unavailable.
+
 ## Run locally
 
 Tested with Python 3.12 on macOS with Apple silicon. Apple GPU inference is selected automatically; CPU inference is also supported. Node.js is only needed to run the JavaScript tests.
@@ -61,6 +73,7 @@ The UI is plain HTML, CSS, and JavaScript. FastAPI serves it and performs local 
 web/                 Interface, pose worker, and event gates
 server.py            Local API and memory-only replay decoding
 inference.py         VideoMAE preprocessing and classification
+runtime_monitor.py   Read-only macOS GPU counters
 model-config.json    Pinned model recipe and class mapping
 config/              Artifact hashes and browser-runtime manifest
 tests/               Event-gate and service checks
@@ -71,6 +84,7 @@ With the server running:
 
 ```sh
 node --test tests/gate.test.mjs
+.venv/bin/python tests/runtime_monitor_test.py
 .venv/bin/python tests/service_checks.py
 ```
 

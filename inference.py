@@ -45,12 +45,35 @@ class Predictor:
         assert self.coef.shape == (1, 768) and np.all(self.scale > 0)
         self.probe_sha = p['source_sha256']
         self.ready = True
+        self.running = False
+        self.completed = 0
+        self.last_execution = None
 
     def synchronize(self):
         if self.device == 'mps':
             torch.mps.synchronize()
 
     def predict(self, frames, audit=False):
+        self.running = True
+        try:
+            result = self._predict(frames, audit)
+            self.completed += 1
+            self.last_execution = result['execution']
+            return result
+        finally:
+            self.running = False
+
+    def runtime(self):
+        """Read actual tensor placement and this process's Metal allocator."""
+        return {
+            'model_device': str(next(self.model.parameters()).device),
+            'running': self.running, 'completed': self.completed,
+            'tensor_bytes': torch.mps.current_allocated_memory() if self.device == 'mps' else None,
+            'driver_bytes': torch.mps.driver_allocated_memory() if self.device == 'mps' else None,
+            'last_execution': self.last_execution,
+        }
+
+    def _predict(self, frames, audit=False):
         if len(frames) != 16:
             raise ValueError('Exactly 16 decoded RGB frames required')
         start = time.perf_counter()
@@ -58,9 +81,20 @@ class Predictor:
         processed = time.perf_counter()
         with torch.inference_mode():
             x = inputs['pixel_values'].to(self.device)
-            feature = self.model(pixel_values=x).last_hidden_state.mean(dim=1).cpu().numpy()
+            start_event = torch.mps.Event(enable_timing=True) if self.device == 'mps' else None
+            end_event = torch.mps.Event(enable_timing=True) if self.device == 'mps' else None
+            if start_event: start_event.record()
+            embedding = self.model(pixel_values=x).last_hidden_state.mean(dim=1)
+            if end_event: end_event.record()
+            feature = embedding.cpu().numpy()
         self.synchronize()
         encoded = time.perf_counter()
+        execution = {
+            'pid': os.getpid(), 'finished_at': time.time(),
+            'model_device': str(next(self.model.parameters()).device),
+            'input_device': str(x.device), 'embedding_device': str(embedding.device),
+            'metal_ms': start_event.elapsed_time(end_event) if start_event else None,
+        }
         logit = ((feature - self.mean) / self.scale) @ self.coef.T + self.intercept
         ollie = float(1 / (1 + np.exp(-np.clip(logit[0, 0], -700, 700))))
         scores = {'kickflip': 1 - ollie, 'ollie': ollie}
@@ -73,6 +107,7 @@ class Predictor:
             'inference_ms': (time.perf_counter() - start) * 1000,
             'model_revision': REVISION, 'probe_sha256': self.probe_sha,
             'frames': 16, 'calibrated': False,
+            'execution': execution,
         }
         if audit:
             result['audit'] = {'frame_shape': list(np.asarray(frames[0]).shape),
