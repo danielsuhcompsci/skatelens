@@ -30,10 +30,6 @@ The verified environment uses Transformers 4.57.1, PyTorch 2.11.0, scikit-learn 
 
 Model inference is local. Media is held in memory, while `.runtime/metrics.json` stores only scores, timings, and model metadata. The repository excludes model weights, browser runtime binaries, local credentials, and training videos.
 
-## Demo presentation
-
-Daniel’s personal demo cut uses a fixed **Ollie** display label. This UI override does not alter the model prediction, exported scores, event gate, or live GPU measurements. The original model label remains in the diagnostic report.
-
 ## Runtime evidence
 
 The optional Device activity panel reads the actual parameter device, MPS tensor allocation, and input/embedding devices from the running Python process. Each inference records a timed pair of Metal events around the encoder and pooling operation. CPU inference reports no Metal timing or GPU tensor memory. The separate GPU graph reads the whole-Mac `IOAccelerator` utilization counter; it is not a per-process utilization measurement.
