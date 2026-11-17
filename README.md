@@ -2,7 +2,7 @@
 
 ![SkateLens demo](docs/demo.gif)
 
-A local skateboarding studio with video replay, live camera, pose tracking, and VideoMAE inference on Apple silicon. The demo shows Daniel’s ollie alongside live M3 Pro activity.
+A local skateboarding studio with video replay, live camera, pose tracking, and VideoMAE inference on Apple silicon. The recorded UI demo shows Daniel’s skate clip alongside live M3 Pro activity.
 
 [Watch the demo](https://github.com/danielsuhcompsci/skatelens/raw/refs/heads/main/docs/demo.mp4)
 
